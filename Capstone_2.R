@@ -46,76 +46,80 @@ data_files                                                    # Print file names
 library(plyr)
 library(readr)
 library(data.table)
-setwd("~/Desktop/sound_analysis/sound_analysis/SFFT/SFFT_Sept_14/")
-dat_csv = ldply(data_files[1:10], read_csv)
-dat_csv
+#setwd("~/Desktop/sound_analysis/sound_analysis/SFFT/SFFT_Sept_14/")
+#dat_csv = ldply(data_files[1:10], read_csv)
+#dat_csv
 
-dat_csv <- as.data.table(dat_csv)
+#dat_csv <- as.data.table(dat_csv)
 
-colnames(dat_csv)
-dat_csv[,aggr_secs := as.POSIXct(trunc(X1, "secs"))]
-dt<-dat_csv[, lapply(.SD, mean), by=aggr_secs]
-
-
-final <- list()
-num <- c(0:14)
-for (i in data_files[0:14]) {
-  dat_csv = ldply(i, read_csv)
-  dat_csv <- as.data.table(dat_csv)
-  dat_csv[,aggr_secs := as.POSIXct(trunc(X1, "secs"))]
-  dt<-dat_csv[, lapply(.SD, mean), by=aggr_secs]
-  append(final, dt, after = length(final))
-  #final[length(final)+1] <- dt
-}
-
-final
+#colnames(dat_csv)
+#dat_csv[,aggr_secs := as.POSIXct(trunc(X1, "secs"))]
+#dt<-dat_csv[, lapply(.SD, mean), by=aggr_secs]
 
 
-dat_csv1 = ldply(data_files[0:50], read_csv)
-dat_csv2 = ldply(data_files[51:100], read_csv)
-dat_csv3 = ldply(data_files[100:144], read_csv)
+#final <- list()
+#num <- c(0:14)
+#for (i in data_files[0:14]) {
+#  dat_csv = ldply(i, read_csv)
+#  dat_csv <- as.data.table(dat_csv)
+#  dat_csv[,aggr_secs := as.POSIXct(trunc(X1, "secs"))]
+#  dt<-dat_csv[, lapply(.SD, mean), by=aggr_secs]
+#  append(final, dt, after = length(final))
+  ##final[length(final)+1] <- dt
+#}
+
+#final
 
 
-
-na <- colSums(is.na(dat_csv))
-na_df <- data.frame(na)
-na_df[!na_df$na %in% c(0), ]
+#dat_csv1 = ldply(data_files[0:50], read_csv)
+#dat_csv2 = ldply(data_files[51:100], read_csv)
+#dat_csv3 = ldply(data_files[100:144], read_csv)
 
 
 
-int <- read_csv("../../intensity/L01_intensity.csv")
+#na <- colSums(is.na(dat_csv))
+#na_df <- data.frame(na)
+#na_df[!na_df$na %in% c(0), ]
 
-int_files <- list.files("~/Desktop/sound_analysis/sound_analysis/intensity/")  # Identify file names
 
-setwd("~/Desktop/sound_analysis/sound_analysis/intensity/")
-int_csv = ldply(int_files, read_csv)
+
+#int <- read_csv("../../intensity/L01_intensity.csv")
+
+#int_files <- list.files("~/Desktop/sound_analysis/sound_analysis/intensity/")  # Identify file names
+
+#setwd("~/Desktop/sound_analysis/sound_analysis/intensity/")
+#int_csv = ldply(int_files, read_csv)
 #int_csv
 
 
-na_int <- colSums(is.na(int_csv))
-na_df_int <- data.frame(na_int)
-na_df_int[!na_df$na %in% c(0), ]
+#na_int <- colSums(is.na(int_csv))
+#na_df_int <- data.frame(na_int)
+#na_df_int[!na_df$na %in% c(0), ]
 
-dpv <- int_csv$DisplayValue
+#dpv <- int_csv$DisplayValue
 
-a <- as.matrix(data)
+#a <- as.matrix(data)
 
 
 ## Shrinking the Data
 
 #convert matrix from char to num, ignore warnings, they are due to NAs
-class(a) <- "numeric" 
+#class(a) <- "numeric" 
 
 #adapted from @flodel https://stackoverflow.com/a/16884987/680068
-res <- tapply(a, list((row(a) + 1L) %/% 2L, (col(a) + 1L) %/% 2L), mean, na.rm = TRUE)
+#res <- tapply(a, list((row(a) + 1L) %/% 2L, (col(a) + 1L) %/% 2L), mean, na.rm = TRUE)
 
 # remove NANs
-res[ is.nan(res) ] <- NA
-res
+#res[ is.nan(res) ] <- NA
+#res
 
 
 
 
+# PATH FOR INTENSITY FILES
+#setwd("C:/Users/jeanm/Documents/GitHub/data/sound_analysis/intensity")
+# PATH FOR SFFT FILES
+setwd("C:/Users/jeanm/Documents/GitHub/data/sound_analysis/SFFT/Sep 14/unzipped")
 
 
 # Reading many files at once (one day - 144 files)
@@ -127,7 +131,8 @@ system.time({
 }) # Takes 256 seconds in my PC
 # The optimized way (unzipping is done outside R by the OS in parallel)
 # You may need to install gzip. I have it perhaps because it came with 7zip.
-
+str(dt)
+View(dt)
 
 
 
@@ -182,3 +187,11 @@ dt_in<-dt_in[, lapply(.SD, mean), by=aggr_secs]
 
 str(dt_in)
 summary(dt_in)
+
+
+date <- "2020-09-14"
+time <- "10:34:35"
+as.POSIXct(paste(date,time))
+
+x <- '05'
+as.numeric(x)
